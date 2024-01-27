@@ -7,8 +7,12 @@ class NewsEmailer:
         self.email_sender = EmailSender()
         self.api_key = os.environ.get("API_KEY")
 
-    def get_top_headlines(self):
-        news_api_url = f"https://newsapi.org/v2/top-headlines?country=us&apiKey={self.api_key}"
+    def get_top_headlines(self, country, language, subject):
+        news_api_url = f"https://newsapi.org/v2/top-headlines?" \
+                   f"country={country}&" \
+                   f"apiKey={self.api_key}&" \
+                   f"language={language}"
+
         response = requests.get(news_api_url)
 
         if response.status_code == 200:
@@ -26,11 +30,11 @@ class NewsEmailer:
 
             combined_content = "\n".join(news_content_list)
 
-            success = self.email_sender.send_email("Top News Headlines", combined_content)
+            success = self.email_sender.send_email(subject, combined_content)
 
             if success:
-                print("Email sent successfully!")
+                print(f"Email sent successfully for {country}!")
             else:
-                print("Failed to send email. Check the error message above. ^")
+                print(f"Failed to send email for {country}. Check the error message above.")
         else:
             print(f"News API request failed with status code {response.status_code}")

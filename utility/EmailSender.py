@@ -15,7 +15,11 @@ class EmailSender:
         email_message['From'] = self.smtp_username
         email_message['To'] = self.smtp_username
         email_message['Subject'] = subject
-        email_message.attach(MIMEText(body, 'plain'))
+
+        if isinstance(body, str):
+            body = body.encode('utf-8')
+
+        email_message.attach(MIMEText(body.decode('utf-8'), 'plain'))
 
         try:
             with smtplib.SMTP(self.smtp_server, self.smtp_port) as smtp_server:
