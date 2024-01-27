@@ -31,6 +31,6 @@ class NewsEmailer:
             if success:
                 print("Email sent successfully!")
             else:
-                print("Failed to send email. Check the error message above.")
+                print("Failed to send email. Check the error message above. ^")
         else:
             print(f"News API request failed with status code {response.status_code}")
