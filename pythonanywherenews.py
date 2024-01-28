@@ -1,7 +1,39 @@
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 import requests
 import os
 import json
-from .EmailSender import EmailSender
+
+class EmailSender:
+    def __init__(self):
+        self.smtp_server = "smtp.hostinger.com"
+        self.smtp_port = 587
+        self.smtp_username = "support@empchief.com"
+        self.smtp_password = "&833NjKXpb7xjPLo"
+
+    def send_email(self, subject, body, to_email):
+        print(f"Sending email to {to_email}...")
+        email_message = MIMEMultipart()
+        email_message['From'] = self.smtp_username
+        email_message['To'] = to_email
+        email_message['Subject'] = subject
+
+        if isinstance(body, str):
+            body = body.encode('utf-8')
+
+        email_message.attach(MIMEText(body.decode('utf-8'), 'plain'))
+
+        try:
+            with smtplib.SMTP(self.smtp_server, self.smtp_port) as smtp_server:
+                smtp_server.starttls()
+                smtp_server.login(self.smtp_username, self.smtp_password)
+                smtp_server.sendmail(
+                    self.smtp_username, to_email, email_message.as_string())
+            return True
+        except Exception as e:
+            print(f"Error sending email: {e}")
+            return False
 
 class NewsEmailer:
     def __init__(self):
@@ -47,3 +79,8 @@ class NewsEmailer:
                     print(f"Failed to send email to {recipient['name']} ({recipient['email']}). Check the error message above.")
         else:
             print(f"News API request failed with status code {response.status_code}")
+
+if __name__ == "__main__":
+    news_emailer = NewsEmailer()
+    news_emailer.get_top_headlines(country="no", language="no", subject="Top News Headlines in Norway")
+    news_emailer.get_top_headlines(country="us", language="en", subject="Top News Headlines in United States")

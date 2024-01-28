@@ -9,11 +9,11 @@ class EmailSender:
         self.smtp_username = "support@empchief.com"
         self.smtp_password = "&833NjKXpb7xjPLo"
 
-    def send_email(self, subject, body):
-        print("Sending email...")
+    def send_email(self, subject, body, to_email):
+        print(f"Sending email to {to_email}...")
         email_message = MIMEMultipart()
         email_message['From'] = self.smtp_username
-        email_message['To'] = self.smtp_username
+        email_message['To'] = to_email
         email_message['Subject'] = subject
 
         if isinstance(body, str):
@@ -26,7 +26,7 @@ class EmailSender:
                 smtp_server.starttls()
                 smtp_server.login(self.smtp_username, self.smtp_password)
                 smtp_server.sendmail(
-                    self.smtp_username, self.smtp_username, email_message.as_string())
+                    self.smtp_username, to_email, email_message.as_string())
             return True
         except Exception as e:
             print(f"Error sending email: {e}")
