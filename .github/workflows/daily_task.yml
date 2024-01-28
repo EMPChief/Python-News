@@ -1,26 +1,32 @@
-name: Run Daily Task
+name: Daily Flask Build and Test
 
 on:
+  workflow_dispatch:  # This triggers the workflow manually
   schedule:
-    - cron: '0 4 * * *'  # Run every day at 5 AM CET (standard time)
+    - cron: '0 5 * * *'  # Run every day at 5 AM UTC (adjust as needed for Norway time)
 
 jobs:
-  run_script:
+  build:
+
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Set up Python
-        uses: actions/setup-python@v2
+      - uses: actions/checkout@v3
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v3
         with:
-          python-version: 3.8
-
-      - name: Install Dependencies
+          python-version: "3.10"
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-
+      - name: Set up Environment
+        run: |
+          # Additional setup, e.g., installing utility package
+          pip install utility_package  # Replace with the actual name of your utility package
+      - name: Test with pytest
+        run: |
+          pytest
       - name: Run Python Script
-        run: python main.py
+        run: |
+          python main.py
