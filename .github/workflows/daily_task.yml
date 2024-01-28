@@ -1,4 +1,4 @@
-name: Daily Flask Build and Run
+name: Daily Email Sender
 
 on:
   workflow_dispatch:  # This triggers the workflow manually
