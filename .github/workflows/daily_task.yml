@@ -1,9 +1,9 @@
-name: Daily Python Email
+name: Daily Email Sender
 
 on:
-  workflow_dispatch:
+  workflow_dispatch:  # This triggers the workflow manually
   schedule:
-    - cron: '0 4 * * *'
+    - cron: '0 5 * * *'  # Run every day at 5 AM UTC (adjust as needed for Norway time)
 
 jobs:
   build:
@@ -23,13 +23,9 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-      - name: Set up Environment
-        run: |
-          # Additional setup, e.g., installing utility package
-          pip install utility_package  # Replace with the actual name of your utility package
       - name: Test with pytest
         run: |
           pytest
       - name: Run Python Script
         run: |
-          API_KEY=$API_KEY python main.py
+          python main.py
