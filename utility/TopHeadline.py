@@ -6,7 +6,7 @@ from .EmailSender import EmailSender
 class NewsEmailer:
     def __init__(self):
         self.email_sender = EmailSender()
-        self.api_key = os.environ.get("API_KEY")
+        self.api_key = "0b92d8f3528e4a41a9b123ff8dce3b6c"
 
     def read_recipients(self, file_path="data/recipients.json"):
         with open(file_path, "r") as file:
