@@ -1,14 +1,17 @@
-name: Daily Flask Build and Test
+name: Daily Python Email
 
 on:
-  workflow_dispatch:  # This triggers the workflow manually
+  workflow_dispatch:
   schedule:
-    - cron: '0 5 * * *'  # Run every day at 5 AM UTC (adjust as needed for Norway time)
+    - cron: '0 4 * * *'
 
 jobs:
   build:
 
     runs-on: ubuntu-latest
+
+    env:
+      API_KEY: ${{ secrets.API_KEY }}
 
     steps:
       - uses: actions/checkout@v3
@@ -29,4 +32,4 @@ jobs:
           pytest
       - name: Run Python Script
         run: |
-          python main.py
+          API_KEY=$API_KEY python main.py
