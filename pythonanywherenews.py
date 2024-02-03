@@ -5,6 +5,15 @@ import requests
 import os
 import json
 
+"""
+EmailSender class for sending emails via SMTP.
+
+Provides a simple interface for constructing and sending emails via SMTP.
+Handles connecting to the SMTP server, constructing the email message, 
+and sending it.
+"""
+
+
 class EmailSender:
     def __init__(self):
         self.smtp_server = "smtp.hostinger.com"
@@ -35,6 +44,7 @@ class EmailSender:
             print(f"Error sending email: {e}")
             return False
 
+
 class NewsEmailer:
     def __init__(self):
         self.email_sender = EmailSender()
@@ -47,9 +57,9 @@ class NewsEmailer:
 
     def get_top_headlines(self, country, language, subject):
         news_api_url = f"https://newsapi.org/v2/top-headlines?" \
-                   f"country={country}&" \
-                   f"apiKey={self.api_key}&" \
-                   f"language={language}"
+            f"country={country}&" \
+            f"apiKey={self.api_key}&" \
+            f"language={language}"
 
         response = requests.get(news_api_url)
 
@@ -71,16 +81,23 @@ class NewsEmailer:
             recipients = self.read_recipients()
             for recipient in recipients:
                 email_body = f"Hello {recipient['name']},\n\n{combined_content}"
-                success = self.email_sender.send_email(subject, email_body, recipient['email'])
+                success = self.email_sender.send_email(
+                    subject, email_body, recipient['email'])
 
                 if success:
-                    print(f"Email sent successfully to {recipient['name']} ({recipient['email']})!")
+                    print(
+                        f"Email sent successfully to {recipient['name']} ({recipient['email']})!")
                 else:
-                    print(f"Failed to send email to {recipient['name']} ({recipient['email']}). Check the error message above.")
+                    print(
+                        f"Failed to send email to {recipient['name']} ({recipient['email']}). Check the error message above.")
         else:
-            print(f"News API request failed with status code {response.status_code}")
+            print(
+                f"News API request failed with status code {response.status_code}")
+
 
 if __name__ == "__main__":
     news_emailer = NewsEmailer()
-    news_emailer.get_top_headlines(country="no", language="no", subject="Top News Headlines in Norway")
-    news_emailer.get_top_headlines(country="us", language="en", subject="Top News Headlines in United States")
+    news_emailer.get_top_headlines(
+        country="no", language="no", subject="Top News Headlines in Norway")
+    news_emailer.get_top_headlines(
+        country="us", language="en", subject="Top News Headlines in United States")

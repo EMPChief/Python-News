@@ -2,6 +2,13 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
+"""EmailSender class for sending emails via SMTP.
+
+Provides a simple interface for constructing and sending email messages via SMTP.
+Handles connecting to an SMTP server, constructing MIME messages, and sending.
+"""
+
+
 class EmailSender:
     def __init__(self):
         self.smtp_server = "smtp.hostinger.com"
